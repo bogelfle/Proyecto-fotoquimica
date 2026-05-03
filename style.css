@@ -1,0 +1,14 @@
+canvas {
+  display: block;
+  margin: auto;
+  background: #061a0a;
+  border-radius: 10px;
+}
+
+button {
+  margin: 5px;
+  padding: 8px;
+}
+body {
+  background: black;
+}
