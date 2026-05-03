@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Fotosíntesi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- CONTROLS -->
+  <div style="text-align:center; color:white;">
+
+    <label>Llum:
+      <input id="luzSlider" type="range" min="0" max="100" value="80">
+    </label>
+    <br>
+
+    <label>CO₂:
+      <input id="co2Slider" type="range" min="10" max="100" value="40">
+    </label>
+    <br>
+
+    <label>Temperatura:
+      <input id="tempSlider" type="range" min="10" max="40" value="25">
+    </label>
+
+  </div>
+
+  <br>
+
+  <!-- BOTONS -->
+  <div style="text-align:center;">
+    <button id="btnReset">Reiniciar</button>
+    <button onclick="canviarVista('macro')">Macro</button>
+    <button onclick="canviarVista('micro')">Micro</button>
+    <button onclick="canviarVista('fotosistemes')">Fotosistemes</button>
+    <button onclick="canviarVista('flux')">Flux d'electrons</button>
+  </div>
+
+  <br>
+
+  <!-- SIMULACIÓ -->
+  <canvas id="canvas" width="600" height="400"></canvas>
+
+  <p id="info" style="text-align:center; color:white;"></p>
+
+  <h3 style="text-align:center; color:white;">
+    6 CO₂ + 6 H₂O + llum → C₆H₁₂O₆ + 6 O₂
+  </h3>
+
+  <!-- GRÀFIQUES -->
+  <canvas id="gEnergia" width="600" height="100"></canvas>
+  <canvas id="gGlucosa" width="600" height="100"></canvas>
+  <canvas id="gO2" width="600" height="100"></canvas>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
+
