@@ -260,9 +260,9 @@ function loop() {
     `Llum: ${intensitatLlum.toFixed(2)} | CO₂: ${nivellCO2} | Temp: ${temperatura}°C
 ATP: ${atp} | NADPH: ${nadph} | Glucosa: ${glucosa.toFixed(1)} | O₂: ${dipositO2.toFixed(1)}`;
 
-  draw(gE, hEnergia, "lime");
-  draw(gG, hGlucosa, "orange");
-  draw(gO, hO2, "deepskyblue");
+  draw(gE, hEnergia, "lime", "Energia acumulada");
+  draw(gG, hGlucosa, "orange", "Glucosa acumulada");
+  draw(gO, hO2, "deepskyblue", "Oxigen acumulat");
 
   requestAnimationFrame(loop);
 }
