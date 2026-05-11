@@ -71,7 +71,7 @@ function reiniciar() {
 
 reiniciar();
 
-// sliders
+// Sliders
 document.getElementById("luzSlider").addEventListener("input", e => {
   intensitatLlum = e.target.value / 100;
 });
@@ -86,21 +86,19 @@ document.getElementById("tempSlider").addEventListener("input", e => {
 
 document.getElementById("btnReset").addEventListener("click", reiniciar);
 
-// canvi vista
+// Canvi vista
 window.canviarVista = function(v) {
   vista = v;
 };
 
-// eficiència
+// Eficiència
 function eficiencia() {
   let factorTemp = 1 - Math.abs(25 - temperatura) / 25;
   return Math.max(0, intensitatLlum * factorTemp);
 }
 
-// vista macro
 function macro() {
   ctx.clearRect(0, 0, 600, 400);
-
   ctx.beginPath();
   ctx.arc(planta.x, planta.y, planta.r, 0, Math.PI * 2);
   ctx.fillStyle = "rgba(0,255,0,0.2)";
@@ -109,7 +107,6 @@ function macro() {
   molecules.forEach(m => {
     m.x += m.vx;
     m.y += m.vy;
-
     if (m.x < 0) m.x = 600;
     if (m.x > 600) m.x = 0;
     if (m.y < 0) m.y = 400;
@@ -125,7 +122,6 @@ function macro() {
         nadph += 1;
         energia += 1;
         dipositO2 += 1;
-
         if (atp > 5 && nadph > 5) {
           glucosa += 1;
           atp -= 3;
@@ -133,7 +129,6 @@ function macro() {
         }
       }
     }
-
     ctx.beginPath();
     ctx.arc(m.x, m.y, 5, 0, Math.PI * 2);
     ctx.fillStyle = "deepskyblue";
@@ -141,10 +136,8 @@ function macro() {
   });
 }
 
-// vista micro
 function micro() {
   ctx.clearRect(0, 0, 600, 400);
-
   ctx.beginPath();
   ctx.arc(300, 200, 80, 0, Math.PI * 2);
   ctx.fillStyle = `rgba(0,255,0,${intensitatLlum})`;
@@ -153,10 +146,8 @@ function micro() {
   electrons.forEach(e => {
     e.speed = intensitatLlum > 0 ? 0.05 : 0.01;
     e.angle += e.speed;
-
     let x = 300 + Math.cos(e.angle) * 50;
     let y = 200 + Math.sin(e.angle) * 50;
-
     ctx.beginPath();
     ctx.arc(x, y, 3, 0, Math.PI * 2);
     ctx.fillStyle = "white";
@@ -164,34 +155,30 @@ function micro() {
   });
 }
 
-// fotosistemes
 function fotosistemes() {
   ctx.clearRect(0, 0, 600, 400);
-
+  ctx.fillStyle = "white";
   ctx.beginPath();
   ctx.arc(180, 200, 60, 0, Math.PI * 2);
   ctx.fillStyle = "rgba(0,200,255,0.3)";
   ctx.fill();
+  ctx.fillStyle = "white";
   ctx.fillText("PSII", 165, 205);
 
   ctx.beginPath();
   ctx.arc(420, 200, 60, 0, Math.PI * 2);
   ctx.fillStyle = "rgba(0,255,100,0.3)";
   ctx.fill();
+  ctx.fillStyle = "white";
   ctx.fillText("PSI", 405, 205);
 
   electrons.forEach(e => {
     e.x += 2 * intensitatLlum;
-
-    if (e.x > 250 && e.x < 260) {
-      dipositO2 += 0.05;
-    }
-
+    if (e.x > 250 && e.x < 260) dipositO2 += 0.05;
     if (e.x > 420) {
       glucosa += 0.03;
       e.x = 150;
     }
-
     ctx.beginPath();
     ctx.arc(e.x, e.y, 4, 0, Math.PI * 2);
     ctx.fillStyle = e.x < 320 ? "cyan" : "yellow";
@@ -199,22 +186,17 @@ function fotosistemes() {
   });
 }
 
-// flux electrons
 function flux() {
   ctx.clearRect(0, 0, 600, 400);
-
   ctx.fillStyle = "white";
   ctx.fillText("Flux d'electrons", 240, 40);
-
   electrons.forEach(e => {
     e.x += 2 * intensitatLlum;
     e.energia -= 0.002;
-
     if (e.x > 450) {
       e.x = 150;
       e.energia = 1;
     }
-
     ctx.beginPath();
     ctx.arc(e.x, e.y, 5, 0, Math.PI * 2);
     ctx.fillStyle = e.energia > 0.5 ? "cyan" : "orange";
@@ -222,24 +204,27 @@ function flux() {
   });
 }
 
-// gràfiques
-function draw(ctxGraf, data, color) {
+
+function draw(ctxGraf, data, color, titol) {
   ctxGraf.clearRect(0, 0, 600, 100);
+  
+  ctxGraf.fillStyle = "white";
+  ctxGraf.font = "bold 12px Arial";
+  ctxGraf.fillText(titol, 10, 20);
 
   if (data.length === 0) return;
 
   ctxGraf.beginPath();
   ctxGraf.moveTo(0, 100 - data[0]);
-
   data.forEach((v, i) => {
     ctxGraf.lineTo(i * 6, 100 - v * 0.5);
   });
-
   ctxGraf.strokeStyle = color;
+  ctxGraf.lineWidth = 2;
   ctxGraf.stroke();
 }
 
-// loop principal
+
 function loop() {
   if (vista === "macro") macro();
   else if (vista === "micro") micro();
@@ -260,6 +245,7 @@ function loop() {
     `Llum: ${intensitatLlum.toFixed(2)} | CO₂: ${nivellCO2} | Temp: ${temperatura}°C
 ATP: ${atp} | NADPH: ${nadph} | Glucosa: ${glucosa.toFixed(1)} | O₂: ${dipositO2.toFixed(1)}`;
 
+ 
   draw(gE, hEnergia, "lime", "Energia acumulada");
   draw(gG, hGlucosa, "orange", "Glucosa acumulada");
   draw(gO, hO2, "deepskyblue", "Oxigen acumulat");
@@ -268,4 +254,3 @@ ATP: ${atp} | NADPH: ${nadph} | Glucosa: ${glucosa.toFixed(1)} | O₂: ${diposit
 }
 
 loop();
-
